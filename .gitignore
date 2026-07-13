@@ -1,0 +1,19 @@
+# Python build and tracking artifacts
+__pycache__/
+*.py[cod]
+build/
+dist/
+wheels/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+
+# Environment variables and secrets
+.env
+
+# Project specific runtime data
+data/applications.db
+data/tailored_resumes/
