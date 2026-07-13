@@ -17,3 +17,4 @@ wheels/
 # Project specific runtime data
 data/applications.db
 data/tailored_resumes/
+
