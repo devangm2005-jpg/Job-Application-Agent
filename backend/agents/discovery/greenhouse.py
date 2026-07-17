@@ -42,7 +42,7 @@ async def fetch_greenhouse_jobs(company_board_token: str) -> list[Job]:
         for item, description in zip(raw_jobs, descriptions):
             jobs.append(
                 Job(
-                    job_id=f"fg_{item['id']}",
+                    job_id=f"gh_{item['id']}",
                     source="greenhouse",
                     company=company_board_token,
                     title=item["title"],
