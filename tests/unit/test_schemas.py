@@ -21,7 +21,7 @@ def test_job_rejects_bad_source():
     with pytest.raises(ValidationError):
         Job(
             job_id="x_001",
-            source="indeed",  # not in Literal
+            source="linkedin",  # not in Literal
             company="Acme",
             title="Backend Engineer",
             location="Remote",

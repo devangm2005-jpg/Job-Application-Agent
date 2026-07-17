@@ -1,0 +1,57 @@
+{
+  "name": "Devang <last name>",
+  "contact": {
+    "email": "devangm2005@gmail.com",
+    "phone": "9530479697",
+    "location": "Pune, Maharashtra, IN",
+    "linkedin": "https://linkedin.com/in/devang-mehta-6ab753358",
+    "github": "https://github.com/devangm2005-jpg"
+  },
+  "summary": "1-2 sentence professional summary, written broad enough to be trimmed per role.",
+  "skills": {
+    "languages": ["Python"],
+    "frameworks": ["LangGraph", "Pydantic", "Streamlit"],
+    "tools": ["Git", "Docker", "uv"],
+    "other": []
+  },
+  "experience": [
+    {
+      "id": "exp_1",
+      "company": "",
+      "title": "",
+      "location": "",
+      "start_date": "",
+      "end_date": "",
+      "bullets": [
+        {
+          "id": "exp_1_b1",
+          "text": "Specific, quantified accomplishment — this is what the tailoring agent reorders/rephrases, never fabricates."
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_1",
+      "name": "Job_Application_Agent",
+      "description": "Multi-agent job application pipeline: LangGraph orchestration, Playwright automation, Gemini-based resume tailoring.",
+      "tech": ["Python", "LangGraph", "Playwright", "Pydantic", "SQLite"],
+      "bullets": [
+        {
+          "id": "proj_1_b1",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": "edu_1",
+      "institution": "",
+      "degree": "",
+      "start_date": "",
+      "end_date": ""
+    }
+  ],
+  "certifications": []
+}
