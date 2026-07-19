@@ -22,14 +22,27 @@ async def verify_all() -> None:
     async with httpx.AsyncClient() as client:
         tasks = [
             verify_one(client, source, slug)
-            for source, slugs in COMPANIES.items()
-            for slug in slugs
+            for slug in COMPANIES
+            for source in CHECK_URLS
         ]
         results = await asyncio.gather(*tasks)
 
+    print("\n✅ CONFIRMED LIVE:")
+    confirmed = {}
     for source, slug, ok, status in results:
-        icon = "✅" if ok else "❌"
-        print(f"{icon} [{source}] {slug} — HTTP {status}")
+        if ok:
+            confirmed[slug] = source
+            print(f"  [{source}] {slug}")
+
+    print(f"\n📊 {len(confirmed)}/{len(COMPANIES)} companies resolved to a real ATS.")
+    print("\nCopy-pasteable dict for companies.py:")
+    print("COMPANIES = {")
+    by_platform: dict[str, list[str]] = {}
+    for slug, source in confirmed.items():
+        by_platform.setdefault(source, []).append(slug)
+    for source, slugs in by_platform.items():
+        print(f'    "{source}": {slugs},')
+    print("}")
 
 
 if __name__ == "__main__":
