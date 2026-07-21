@@ -3,7 +3,14 @@ from typing import Optional
 from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
+from google.genai.errors import ServerError, ClientError
 from backend.schemas.models import Job, ParsedJD
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential,
+    retry_if_exception_type,
+)
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,6 +33,25 @@ class _JDExtraction(BaseModel):
     seniority_level: str
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1,min=2,max=15),
+    retry=retry_if_exception_type(ServerError),
+    reraise=True,
+)
+
+async def _call_gemini(prompt:str):
+    return await client.aio.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=PARSE_SYSTEM_INSTRUCTION,
+            response_mime_type="application/json",
+            response_schema=_JDExtraction,
+            temperature=0.1,
+        ),  
+    )
+
 
 async def parse_job_description(job: Job) -> Optional[ParsedJD]:
     """Asynchronously parses raw job postings into strict, structured Pydantic schemas using Gemini."""
@@ -46,16 +72,7 @@ Job Description Text:
 """
     
     try:
-        response = await client.aio.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                system_instruction=PARSE_SYSTEM_INSTRUCTION,
-                response_mime_type="application/json",
-                response_schema=_JDExtraction,
-                temperature=0.1
-            ),
-        )
+        response = await _call_gemini(prompt)
 
         if not response.text:
             return None        
