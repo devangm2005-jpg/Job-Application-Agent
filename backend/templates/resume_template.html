@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ name }} — Resume</title>
+<style>
+    @page { size: A4; margin: 1.5cm; }
+    body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 10pt;
+        color: #1a1a1a;
+        line-height: 1.4;
+    }
+    header { text-align: center; margin-bottom: 10px; }
+    header h1 { margin: 0; font-size: 19pt; letter-spacing: 0.5px; }
+    header .role-tagline { font-size: 11pt; color: #333; margin: 2px 0 6px 0; }
+    .contact-line { font-size: 9pt; color: #444; }
+    .contact-line a { color: #444; text-decoration: none; }
+    .contact-line span::after { content: " | "; color: #aaa; }
+    .contact-line span:last-child::after { content: ""; }
+
+    section { margin-top: 12px; }
+    section h2 {
+        font-size: 11pt;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 1.2px solid #333;
+        padding-bottom: 2px;
+        margin-bottom: 6px;
+    }
+    .summary-text { font-size: 10pt; color: #333; }
+
+    .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 24px;
+    }
+    .skill-category { width: 30%; margin-bottom: 6px; }
+    .skill-category h3 {
+        font-size: 9.5pt;
+        margin: 0 0 2px 0;
+        font-weight: bold;
+    }
+    .skill-category ul { margin: 0; padding-left: 14px; font-size: 9pt; }
+
+    .project-entry { margin-bottom: 10px; }
+    .project-name { font-weight: bold; font-size: 10.5pt; }
+    .project-tech { font-size: 9pt; font-style: italic; color: #555; margin-bottom: 3px; }
+    ul.bullets { margin: 3px 0 0 0; padding-left: 16px; }
+    ul.bullets li { margin-bottom: 2px; }
+
+    .entry-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 10pt; }
+    .entry-subheader { display: flex; justify-content: space-between; font-style: italic; font-size: 9.5pt; color: #555; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>{{ name }}</h1>
+    {% if role_tagline %}<div class="role-tagline">{{ role_tagline }}</div>{% endif %}
+    <div class="contact-line">
+        {% if contact.email %}<span>{{ contact.email }}</span>{% endif %}
+        {% if contact.phone %}<span>{{ contact.phone }}</span>{% endif %}
+        {% if contact.location %}<span>{{ contact.location }}</span>{% endif %}
+        {% if contact.linkedin %}<span><a href="{{ contact.linkedin }}">LinkedIn</a></span>{% endif %}
+        {% if contact.portfolio %}<span><a href="{{ contact.portfolio }}">Portfolio Site</a></span>{% endif %}
+        {% if contact.leetcode %}<span><a href="{{ contact.leetcode }}">LeetCode</a></span>{% endif %}
+        {% if contact.github %}<span><a href="{{ contact.github }}">GitHub</a></span>{% endif %}
+    </div>
+</header>
+
+<section>
+    <h2>Summary</h2>
+    <p class="summary-text">{{ professional_summary }}</p>
+</section>
+
+{% if skills %}
+<section>
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+        {% for category, items in skills.items() %}
+        <div class="skill-category">
+            <h3>{{ category }}</h3>
+            <ul>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if projects %}
+<section>
+    <h2>Projects</h2>
+    {% for proj in projects %}
+    <div class="project-entry">
+        <div class="project-name">{{ proj.name }}</div>
+        {% if proj.tech %}<div class="project-tech">Technologies: {{ proj.tech | join(', ') }}</div>{% endif %}
+        <ul class="bullets">{% for bullet in proj.bullets %}<li>{{ bullet }}</li>{% endfor %}</ul>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
+
+{% if education %}
+<section>
+    <h2>Education</h2>
+    {% for edu in education %}
+    <div class="project-entry">
+        <div class="entry-header"><span>{{ edu.institution }}</span><span>{{ edu.start_date }} – {{ edu.end_date }}</span></div>
+        <div class="entry-subheader"><span>{{ edu.degree }}</span><span>{{ edu.location or '' }}</span></div>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
+
+</body>
+</html>
